@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pratap Dairy — Owner Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1208;
+  --gold: #d4a017;
+  --gold-dark: #b8860b;
+  --gold-light: #f4cf4e;
+  --cream: #fafafa;
+  --white: #ffffff;
+  --border: #e8e4d8;
+  --muted: #8a7a5a;
+  --text: #1a1208;
+  --subtle: #6b6b6b;
+  --green: #2e7d52;
+  --green-pale: #d4f5e1;
+  --red: #c0392b;
+  --red-pale: #ffe0dd;
+  --amber: #f39c12;
+  --amber-pale: #fff3d6;
+  --card-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+body {
+  font-family: "DM Sans", sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* HEADER */
+.header {
+  background: var(--ink);
+  padding: 18px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.brand { display:flex; flex-direction:column; }
+.brand-name {
+  font-family: "Playfair Display", serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--gold);
+  line-height:1;
+}
+.brand-sub {
+  font-size: 0.68rem;
+  color: #8a7a5a;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+.header-right {
+  display:flex; align-items:center; gap:28px;
+}
+.header-stat { text-align:center; }
+.header-stat-num {
+  font-family:"DM Sans", sans-serif;
+  font-size: 1.5rem; font-weight: 700;
+  color: var(--gold);
+  line-height:1;
+  letter-spacing: -0.5px;
+}
+.header-stat-label {
+  font-size:.65rem; color:#8a7a5a;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top:3px;
+}
+.refresh-btn {
+  background: var(--gold);
+  color: var(--ink);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: .88rem;
+  cursor: pointer;
+  display:flex; align-items:center; gap:6px;
+  font-family: "DM Sans", sans-serif;
+  transition: background .15s;
+}
+.refresh-btn:hover { background: var(--gold-light); }
+.refresh-btn.loading .refresh-icon { animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.notify-status {
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 50%;
+  transition: background .15s;
+  user-select: none;
+}
+.notify-status:hover { background: rgba(212, 160, 23, 0.15); }
+.notify-status.granted { opacity: 1; }
+.notify-status.denied { opacity: 0.4; }
+
+/* FILTER BAR */
+.filter-bar {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin: 18px 22px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  box-shadow: var(--card-shadow);
+}
+.filter-pill {
+  padding: 8px 16px;
+  border-radius: 22px;
+  font-size: .85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--white);
+  color: var(--subtle);
+  transition: all .15s;
+  display:flex; align-items:center; gap:5px;
+  white-space: nowrap;
+}
+.filter-pill:hover { border-color: var(--ink); }
+.filter-pill.active {
+  background: var(--ink);
+  color: var(--gold);
+  border-color: var(--ink);
+}
+.filter-date {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: .85rem;
+  font-family: inherit;
+  color: var(--text);
+  cursor: pointer;
+  background: var(--white);
+}
+.filter-search {
+  flex: 1;
+  min-width: 180px;
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  font-size: .88rem;
+  font-family: inherit;
+  outline: none;
+  background: var(--white);
+}
+.filter-search:focus { border-color: var(--gold-dark); }
+.filter-search-btn {
+  background: var(--gold);
+  color: var(--ink);
+  border: none;
+  padding: 8px 18px;
+  border-radius: 22px;
+  font-weight: 700;
+  font-size: .85rem;
+  cursor: pointer;
+  display:flex; align-items:center; gap:4px;
+}
+
+/* SUMMARY CARD */
+.summary-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 22px;
+  margin: 0 22px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--card-shadow);
+}
+.summary-left { display:flex; align-items:center; gap:14px; }
+.summary-label {
+  font-family: "Playfair Display", serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.summary-badge {
+  background: var(--green-pale);
+  color: var(--green);
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.summary-right {
+  display:flex; gap: 36px;
+}
+.summary-stat { text-align:right; }
+.summary-stat-num {
+  font-family: "DM Sans", sans-serif;
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--ink);
+  line-height:1;
+  letter-spacing: -0.5px;
+}
+.summary-stat-label {
+  font-size: .62rem;
+  color: var(--subtle);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* STATUS TABS */
+.status-tabs {
+  display:flex;
+  gap: 10px;
+  margin: 0 22px 14px;
+  flex-wrap: wrap;
+}
+.status-tab {
+  padding: 10px 18px;
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  cursor: pointer;
+  font-weight: 700;
+  font-size: .9rem;
+  display:flex; align-items:center; gap:8px;
+  transition: all .15s;
+}
+.status-tab.active {
+  background: var(--ink);
+  color: var(--gold);
+  border-color: var(--ink);
+}
+.status-tab-count {
+  background: var(--gold);
+  color: var(--ink);
+  font-size: .7rem;
+  padding: 1px 8px;
+  border-radius: 10px;
+  font-weight: 800;
+}
+.status-tab:not(.active) .status-tab-count {
+  background: var(--amber-pale);
+  color: var(--ink);
+}
+
+/* ORDERS LIST */
+.orders-container {
+  margin: 0 22px 60px;
+}
+.order-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 12px;
+  box-shadow: var(--card-shadow);
+  transition: box-shadow .2s;
+}
+.order-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+.order-card.new-order { animation: highlight 1.2s ease; border-color: var(--gold); }
+@keyframes highlight { 0%{background:#fff8dc;} 100%{background:var(--white);} }
+
+.order-top {
+  display:flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.order-top-left { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+.order-id {
+  font-weight: 700;
+  font-size: .85rem;
+  color: var(--ink);
+  background: var(--amber-pale);
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-family: "DM Sans", monospace;
+}
+.order-time {
+  font-size: .8rem;
+  color: var(--subtle);
+}
+.order-status {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.order-status.Pending  { background: var(--amber-pale); color: #c27400; }
+.order-status.Accepted { background: var(--green-pale); color: var(--green); }
+.order-status.Rejected { background: var(--red-pale); color: var(--red); }
+.order-status.Review   { background: #e8deff; color: #6a3cb0; }
+
+.order-customer {
+  display:flex; flex-wrap:wrap; gap:14px;
+  margin-bottom:10px;
+  font-size: .85rem;
+}
+.order-customer-label { color: var(--subtle); margin-right: 4px; }
+.order-customer-value { font-weight: 600; color: var(--ink); }
+
+.order-items {
+  background: #fafaf6;
+  border-left: 3px solid var(--gold);
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: .85rem;
+  line-height: 1.6;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.order-notes {
+  background: #fff6e0;
+  border-left: 3px solid var(--amber);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: .82rem;
+  color: #6b4a00;
+  margin-bottom: 10px;
+  font-style: italic;
+}
+.order-bottom {
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.order-total {
+  font-family: "Playfair Display", serif;
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: var(--ink);
+}
+.order-total-label {
+  font-size: .7rem;
+  color: var(--subtle);
+  margin-right: 4px;
+  font-family: "DM Sans", sans-serif;
+  font-weight: 400;
+}
+
+.order-actions { display:flex; gap:8px; }
+.action-btn {
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: .85rem;
+  cursor: pointer;
+  border: none;
+  display:flex; align-items:center; gap:5px;
+  transition: all .15s;
+  font-family: "DM Sans", sans-serif;
+}
+.action-btn.accept {
+  background: var(--green);
+  color: var(--white);
+}
+.action-btn.accept:hover { background: #236540; }
+.action-btn.reject {
+  background: var(--white);
+  color: var(--red);
+  border: 1.5px solid var(--red);
+}
+.action-btn.reject:hover { background: var(--red-pale); }
+.action-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+.spam-warning {
+  background: #fff0f0;
+  border: 1px solid var(--red-pale);
+  color: var(--red);
+  font-size: .78rem;
+  padding: 6px 10px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  display:flex; align-items:center; gap:6px;
+}
+
+/* EMPTY STATE */
+.empty-state {
+  text-align:center;
+  padding: 60px 20px;
+  color: var(--subtle);
+}
+.empty-icon { font-size: 3rem; margin-bottom: 12px; opacity:.5; }
+.empty-title { font-size: 1.1rem; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.empty-sub { font-size: .88rem; }
+
+/* LOADER */
+.loader {
+  display: none;
+  text-align:center;
+  padding: 20px;
+  color: var(--subtle);
+}
+.loader.show { display: block; }
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 22px; right: 22px;
+  background: var(--ink);
+  color: var(--gold);
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: 1px solid var(--gold);
+  font-weight: 600;
+  font-size: .88rem;
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all .3s ease;
+  pointer-events: none;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+
+/* RESPONSIVE */
+@media (max-width: 640px) {
+  .header { padding: 14px 16px; }
+  .header-right { gap: 16px; }
+  .header-stat-num { font-size: 1.2rem; }
+  .brand-name { font-size: 1.3rem; }
+  .refresh-btn { padding: 8px 14px; font-size: .8rem; }
+  .filter-bar, .summary-card, .status-tabs, .orders-container { margin-left: 12px; margin-right: 12px; }
+  .summary-right { gap: 20px; }
+  .order-top-left { gap: 6px; }
+  .order-customer { font-size: .8rem; gap: 10px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="brand">
+    <div class="brand-name">Pratap Dairy</div>
+    <div class="brand-sub">Owner Dashboard</div>
+  </div>
+  <div class="header-right">
+    <div class="header-stat">
+      <div class="header-stat-num" id="headerOrders">0</div>
+      <div class="header-stat-label">Orders</div>
+    </div>
+    <div class="header-stat">
+      <div class="header-stat-num" id="headerRevenue">₹0</div>
+      <div class="header-stat-label">Revenue</div>
+    </div>
+    <button class="refresh-btn" id="refreshBtn" onclick="refresh(true)" title="Refresh now">
+      <span class="refresh-icon">🔄</span> <span id="refreshBtnText">Refresh</span>
+    </button>
+    <span class="notify-status" id="notifyStatus" onclick="requestNotifyPermission()" title="Click to enable notifications">🔕</span>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="filter-pill active" data-filter="today" onclick="setFilter('today')">📅 Today</div>
+  <div class="filter-pill" data-filter="yesterday" onclick="setFilter('yesterday')">⏪ Yesterday</div>
+  <div class="filter-pill" data-filter="last7" onclick="setFilter('last7')">📊 Last 7 Days</div>
+  <div class="filter-pill" data-filter="last30" onclick="setFilter('last30')">📈 Last 30 Days</div>
+  <input type="date" class="filter-date" id="filterDate" onchange="setCustomDate()">
+  <input type="text" class="filter-search" id="searchInput" placeholder="Order ID or Phone" onkeydown="if(event.key==='Enter') doSearch()">
+  <button class="filter-search-btn" onclick="doSearch()">🔍 Search</button>
+</div>
+
+<!-- SUMMARY CARD -->
+<div class="summary-card">
+  <div class="summary-left">
+    <div class="summary-label" id="summaryLabel">Today</div>
+    <div class="summary-badge" id="summaryBadge">TODAY</div>
+  </div>
+  <div class="summary-right">
+    <div class="summary-stat">
+      <div class="summary-stat-num" id="summaryOrders">0</div>
+      <div class="summary-stat-label">Orders</div>
+    </div>
+    <div class="summary-stat">
+      <div class="summary-stat-num" id="summaryRevenue">₹0</div>
+      <div class="summary-stat-label">Revenue</div>
+    </div>
+  </div>
+</div>
+
+<!-- STATUS TABS -->
+<div class="status-tabs">
+  <div class="status-tab active" data-status="all" onclick="setStatus('all')">
+    All Orders <span class="status-tab-count" id="countAll">0</span>
+  </div>
+  <div class="status-tab" data-status="Pending" onclick="setStatus('Pending')">
+    🟡 Pending <span class="status-tab-count" id="countPending">0</span>
+  </div>
+  <div class="status-tab" data-status="Accepted" onclick="setStatus('Accepted')">
+    ✅ Accepted <span class="status-tab-count" id="countAccepted">0</span>
+  </div>
+  <div class="status-tab" data-status="Rejected" onclick="setStatus('Rejected')">
+    ❌ Rejected <span class="status-tab-count" id="countRejected">0</span>
+  </div>
+  <div class="status-tab" data-status="Review" onclick="setStatus('Review')">
+    ⚠️ Review <span class="status-tab-count" id="countReview">0</span>
+  </div>
+</div>
+
+<!-- ORDERS CONTAINER -->
+<div class="orders-container" id="ordersContainer">
+  <div class="empty-state">
+    <div class="empty-icon">📋</div>
+    <div class="empty-title">Loading orders...</div>
+  </div>
+</div>
+
+<div class="loader" id="loader">Loading…</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ============ CONFIG ============
+const API_URL = ""; // <-- PASTE your Google Apps Script /exec URL here
+const POLL_FOREGROUND_MS = 8000;   // 8s when tab is visible
+const POLL_BACKGROUND_MS = 15000;  // 15s when tab is in background
+const AUTO_PAUSE_AFTER_MINUTES = 60; // pause polling after 60min of no interaction on hidden tab
+const BEEP_ENABLED = true;
+const NOTIFY_ENABLED = true;
+
+// ============ STATE ============
+let currentFilter = "today";
+let currentStatus = "all";
+let allOrders = [];
+let allStats = {};
+let knownOrderIds = new Set();
+let firstLoad = true;
+let customDate = "";
+
+// ============ BEEP ============
+let audioCtx = null;
+function beep() {
+  if (!BEEP_ENABLED) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.connect(g); g.connect(audioCtx.destination);
+    o.frequency.value = 880;
+    o.type = "sine";
+    g.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.25, audioCtx.currentTime + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.35);
+    o.start();
+    o.stop(audioCtx.currentTime + 0.4);
+    // Double beep
+    setTimeout(() => {
+      const o2 = audioCtx.createOscillator();
+      const g2 = audioCtx.createGain();
+      o2.connect(g2); g2.connect(audioCtx.destination);
+      o2.frequency.value = 1040;
+      o2.type = "sine";
+      g2.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+      g2.gain.exponentialRampToValueAtTime(0.25, audioCtx.currentTime + 0.02);
+      g2.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.35);
+      o2.start();
+      o2.stop(audioCtx.currentTime + 0.4);
+    }, 220);
+  } catch(e) { /* ignore */ }
+}
+
+// ============ TOAST ============
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2800);
+}
+
+// ============ FILTER / STATUS ============
+function setFilter(f) {
+  currentFilter = f;
+  customDate = "";
+  document.getElementById("filterDate").value = "";
+  document.querySelectorAll(".filter-pill").forEach(p => p.classList.toggle("active", p.dataset.filter === f));
+
+  // Update summary label
+  const labels = {today:"Today", yesterday:"Yesterday", last7:"Last 7 Days", last30:"Last 30 Days"};
+  const badges = {today:"TODAY", yesterday:"YESTERDAY", last7:"7 DAYS", last30:"30 DAYS"};
+  document.getElementById("summaryLabel").textContent = labels[f] || f;
+  document.getElementById("summaryBadge").textContent = badges[f] || f.toUpperCase();
+
+  refresh();
+}
+
+function setCustomDate() {
+  const d = document.getElementById("filterDate").value;
+  if (!d) return;
+  customDate = d;
+  currentFilter = "custom";
+  document.querySelectorAll(".filter-pill").forEach(p => p.classList.remove("active"));
+  document.getElementById("summaryLabel").textContent = d;
+  document.getElementById("summaryBadge").textContent = "CUSTOM";
+  refresh();
+}
+
+function setStatus(s) {
+  currentStatus = s;
+  document.querySelectorAll(".status-tab").forEach(t => t.classList.toggle("active", t.dataset.status === s));
+  renderOrders();
+}
+
+function doSearch() {
+  refresh();
+}
+
+// ============ FETCH ============
+async function refresh(manual) {
+  if (!API_URL) {
+    renderEmpty("⚠️", "API not configured", "Paste your Google Apps Script URL into API_URL in owner.html");
+    return;
+  }
+
+  const btn = document.getElementById("refreshBtn");
+  if (manual) btn.classList.add("loading");
+
+  try {
+    const q = document.getElementById("searchInput").value.trim();
+    const params = new URLSearchParams({action: "orders", filter: currentFilter});
+    if (q) params.append("q", q);
+    if (currentFilter === "custom" && customDate) {
+      params.append("from", customDate);
+      params.append("to", customDate);
+    }
+
+    const resp = await fetch(API_URL + "?" + params.toString());
+    const data = await resp.json();
+    if (!data.ok) { throw new Error(data.error || "Fetch failed"); }
+
+    // Detect new orders — pull out the full order objects so we can notify with details
+    const newOrders = data.orders.filter(o => o.status === "Pending" && !knownOrderIds.has(o.orderId));
+    const newOrderIds = new Set(data.orders.map(o => o.orderId));
+
+    if (!firstLoad && newOrders.length > 0) {
+      beep();
+      showToast(`🔔 ${newOrders.length} new order${newOrders.length > 1 ? "s" : ""}!`);
+      // Fire OS notification for each new order
+      newOrders.forEach(o => sendNotification(o));
+    }
+
+    allOrders = data.orders;
+    allStats = data.stats;
+    knownOrderIds = newOrderIds;
+    firstLoad = false;
+
+    renderOrders();
+    renderStats();
+
+  } catch (err) {
+    showToast("⚠️ " + err.message);
+    console.error(err);
+  } finally {
+    if (manual) btn.classList.remove("loading");
+  }
+}
+
+// ============ RENDER ============
+function renderStats() {
+  document.getElementById("headerOrders").textContent = allStats.totalOrders || 0;
+  document.getElementById("headerRevenue").textContent = "₹" + (allStats.totalRevenue || 0);
+  document.getElementById("summaryOrders").textContent = allStats.totalOrders || 0;
+  document.getElementById("summaryRevenue").textContent = "₹" + (allStats.totalRevenue || 0);
+
+  document.getElementById("countAll").textContent = allStats.totalOrders || 0;
+  document.getElementById("countPending").textContent = allStats.pending || 0;
+  document.getElementById("countAccepted").textContent = allStats.accepted || 0;
+  document.getElementById("countRejected").textContent = allStats.rejected || 0;
+  document.getElementById("countReview").textContent = allStats.review || 0;
+}
+
+function renderOrders() {
+  const container = document.getElementById("ordersContainer");
+  let filtered = allOrders;
+  if (currentStatus !== "all") {
+    filtered = allOrders.filter(o => o.status === currentStatus);
+  }
+
+  if (!filtered.length) {
+    renderEmpty("📋", "No Orders Found", "No orders for the selected filter");
+    return;
+  }
+
+  container.innerHTML = "";
+  filtered.forEach(o => container.appendChild(buildOrderCard(o)));
+}
+
+function renderEmpty(icon, title, sub) {
+  document.getElementById("ordersContainer").innerHTML = `
+    <div class="empty-state">
+      <div class="empty-icon">${icon}</div>
+      <div class="empty-title">${title}</div>
+      <div class="empty-sub">${sub}</div>
+    </div>`;
+}
+
+function buildOrderCard(o) {
+  const card = document.createElement("div");
+  card.className = "order-card";
+
+  // Format time
+  const time = o.time ? o.time.slice(0,5) : "";
+  const dateTime = `${o.date} · ${time}`;
+
+  // Spam warning
+  const spamHtml = (o.spamScore && o.spamScore >= 3)
+    ? `<div class="spam-warning">⚠️ Flagged for review — ${o.reviewReason || "suspicious pattern"}</div>`
+    : "";
+
+  // Notes
+  const notesHtml = (o.notes && String(o.notes).trim())
+    ? `<div class="order-notes">📝 ${escapeHtml(o.notes)}</div>`
+    : "";
+
+  // Actions
+  let actionsHtml = "";
+  if (o.status === "Pending" || o.status === "Review") {
+    actionsHtml = `
+      <div class="order-actions">
+        <button class="action-btn reject" onclick="updateStatus('${o.orderId}', ${o.rowIndex}, 'Rejected')">❌ Reject</button>
+        <button class="action-btn accept" onclick="updateStatus('${o.orderId}', ${o.rowIndex}, 'Accepted')">✅ Accept</button>
+      </div>`;
+  }
+
+  card.innerHTML = `
+    <div class="order-top">
+      <div class="order-top-left">
+        <span class="order-id">${o.orderId}</span>
+        <span class="order-time">${dateTime}</span>
+      </div>
+      <span class="order-status ${o.status}">${o.status}</span>
+    </div>
+    ${spamHtml}
+    <div class="order-customer">
+      <span><span class="order-customer-label">👤</span><span class="order-customer-value">${escapeHtml(o.customerName)}</span></span>
+      <span><span class="order-customer-label">📞</span><a href="tel:${o.phone}" class="order-customer-value">${o.phone}</a></span>
+      <span><span class="order-customer-label">🪑</span><span class="order-customer-value">${escapeHtml(String(o.table))}</span></span>
+    </div>
+    <div class="order-items">${escapeHtml(String(o.items)).replace(/\|/g, "<br>")}</div>
+    ${notesHtml}
+    <div class="order-bottom">
+      <div class="order-total"><span class="order-total-label">TOTAL</span>₹${o.total}</div>
+      ${actionsHtml}
+    </div>
+  `;
+  return card;
+}
+
+function escapeHtml(s) {
+  if (s == null) return "";
+  return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+// ============ UPDATE STATUS ============
+async function updateStatus(orderId, rowIndex, status) {
+  if (!confirm(`Mark order ${orderId} as ${status}?`)) return;
+
+  try {
+    const params = new URLSearchParams({action: "update", rowIndex: rowIndex, status: status});
+    const resp = await fetch(API_URL + "?" + params.toString());
+    const data = await resp.json();
+    if (!data.ok) throw new Error(data.error || "Update failed");
+
+    showToast(`Order ${status.toLowerCase()} ✓`);
+    refresh();
+  } catch(err) {
+    showToast("⚠️ " + err.message);
+  }
+}
+
+// ============ BROWSER NOTIFICATIONS ============
+function updateNotifyUI() {
+  const el = document.getElementById("notifyStatus");
+  if (!el) return;
+  if (!("Notification" in window)) {
+    el.textContent = "🔕";
+    el.title = "Notifications not supported in this browser";
+    return;
+  }
+  if (Notification.permission === "granted") {
+    el.textContent = "🔔";
+    el.className = "notify-status granted";
+    el.title = "Notifications enabled";
+  } else if (Notification.permission === "denied") {
+    el.textContent = "🔕";
+    el.className = "notify-status denied";
+    el.title = "Notifications blocked — enable in browser settings";
+  } else {
+    el.textContent = "🔕";
+    el.className = "notify-status";
+    el.title = "Click to enable notifications";
+  }
+}
+
+function requestNotifyPermission() {
+  if (!NOTIFY_ENABLED) return;
+  if (!("Notification" in window)) return;
+  if (Notification.permission === "default") {
+    Notification.requestPermission().then(p => {
+      updateNotifyUI();
+      if (p === "granted") showToast("🔔 Notifications enabled");
+    });
+  } else {
+    updateNotifyUI();
+  }
+}
+
+function sendNotification(order) {
+  if (!NOTIFY_ENABLED) return;
+  if (!("Notification" in window)) return;
+  if (Notification.permission !== "granted") return;
+
+  try {
+    const itemsSummary = String(order.items || "").split("|")[0].trim().slice(0, 60);
+    const n = new Notification("🍽 New Order — Pratap Dairy", {
+      body: `${order.customerName} · Table ${order.table}\n₹${order.total} · ${order.itemsCount} items\n${itemsSummary}`,
+      tag: order.orderId,           // prevents duplicate notifications
+      requireInteraction: true,     // stays visible until user clicks
+      icon: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%231a1208'/><text x='50' y='70' font-size='70' text-anchor='middle' fill='%23d4a017'>🍽</text></svg>"
+    });
+    n.onclick = () => {
+      window.focus();
+      n.close();
+    };
+  } catch (e) {
+    console.warn("Notification failed:", e);
+  }
+}
+
+// ============ SMART POLLING (visibility-aware) ============
+let pollTimer = null;
+let lastInteractionAt = Date.now();
+
+function scheduleNextPoll() {
+  clearTimeout(pollTimer);
+
+  // Auto-pause if tab is hidden for too long (likely forgotten)
+  const minutesSinceInteraction = (Date.now() - lastInteractionAt) / 60000;
+  if (document.hidden && minutesSinceInteraction > AUTO_PAUSE_AFTER_MINUTES) {
+    // Stop polling — will resume on visibility change or user interaction
+    return;
+  }
+
+  const delay = document.hidden ? POLL_BACKGROUND_MS : POLL_FOREGROUND_MS;
+  pollTimer = setTimeout(async () => {
+    await refresh(false);
+    scheduleNextPoll();
+  }, delay);
+}
+
+// When tab becomes visible again, fetch immediately + restart polling
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) {
+    lastInteractionAt = Date.now();
+    refresh(false);
+    scheduleNextPoll();
+  } else {
+    scheduleNextPoll(); // reschedule at slower rate
+  }
+});
+
+// Track user interaction to prevent auto-pause
+["click", "keydown", "touchstart"].forEach(evt => {
+  document.addEventListener(evt, () => {
+    const wasInactive = (Date.now() - lastInteractionAt) / 60000 > AUTO_PAUSE_AFTER_MINUTES;
+    lastInteractionAt = Date.now();
+    if (wasInactive) scheduleNextPoll(); // resume if was paused
+  }, { passive: true });
+});
+
+// ============ INIT ============
+// Set today's date in date picker
+document.getElementById("filterDate").valueAsDate = new Date();
+
+// Unlock audio context + request notification permission on first interaction (browser policy)
+document.body.addEventListener("click", () => {
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e){}
+  }
+  requestNotifyPermission();
+}, { once: true });
+
+// Initial fetch + start smart polling loop
+updateNotifyUI();
+refresh(true).then(() => scheduleNextPoll());
+</script>
+</body>
+</html>
