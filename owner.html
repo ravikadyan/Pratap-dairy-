@@ -117,9 +117,9 @@ body {
   box-shadow: var(--card-shadow);
 }
 .filter-pill {
-  padding: 8px 16px;
+  padding: 9px 18px;
   border-radius: 22px;
-  font-size: .85rem;
+  font-size: .95rem;
   font-weight: 600;
   cursor: pointer;
   border: 1px solid var(--border);
@@ -136,10 +136,10 @@ body {
   border-color: var(--ink);
 }
 .filter-date {
-  padding: 8px 12px;
+  padding: 9px 14px;
   border: 1px solid var(--border);
   border-radius: 8px;
-  font-size: .85rem;
+  font-size: .95rem;
   font-family: inherit;
   color: var(--text);
   cursor: pointer;
@@ -148,10 +148,10 @@ body {
 .filter-search {
   flex: 1;
   min-width: 180px;
-  padding: 8px 14px;
+  padding: 9px 16px;
   border: 1px solid var(--border);
   border-radius: 22px;
-  font-size: .88rem;
+  font-size: .95rem;
   font-family: inherit;
   outline: none;
   background: var(--white);
@@ -225,13 +225,13 @@ body {
   flex-wrap: wrap;
 }
 .status-tab {
-  padding: 10px 18px;
+  padding: 11px 20px;
   border-radius: 24px;
   border: 1px solid var(--border);
   background: var(--white);
   cursor: pointer;
   font-weight: 700;
-  font-size: .9rem;
+  font-size: 1rem;
   display:flex; align-items:center; gap:8px;
   transition: all .15s;
 }
@@ -243,8 +243,8 @@ body {
 .status-tab-count {
   background: var(--gold);
   color: var(--ink);
-  font-size: .7rem;
-  padding: 1px 8px;
+  font-size: .82rem;
+  padding: 2px 10px;
   border-radius: 10px;
   font-weight: 800;
 }
@@ -281,21 +281,22 @@ body {
 .order-top-left { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
 .order-id {
   font-weight: 700;
-  font-size: .85rem;
+  font-size: .95rem;
   color: var(--ink);
   background: var(--amber-pale);
-  padding: 3px 8px;
+  padding: 4px 10px;
   border-radius: 6px;
   font-family: "DM Sans", monospace;
 }
 .order-time {
-  font-size: .8rem;
+  font-size: .9rem;
   color: var(--subtle);
+  font-weight: 500;
 }
 .order-status {
-  padding: 4px 12px;
+  padding: 5px 13px;
   border-radius: 12px;
-  font-size: .7rem;
+  font-size: .78rem;
   font-weight: 800;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -306,29 +307,29 @@ body {
 .order-status.Review   { background: #e8deff; color: #6a3cb0; }
 
 .order-customer {
-  display:flex; flex-wrap:wrap; gap:14px;
-  margin-bottom:10px;
-  font-size: .85rem;
+  display:flex; flex-wrap:wrap; gap:16px;
+  margin-bottom:12px;
+  font-size: .95rem;
 }
-.order-customer-label { color: var(--subtle); margin-right: 4px; }
+.order-customer-label { color: var(--subtle); margin-right: 5px; }
 .order-customer-value { font-weight: 600; color: var(--ink); }
 
 .order-items {
   background: #fafaf6;
   border-left: 3px solid var(--gold);
-  padding: 10px 12px;
+  padding: 12px 14px;
   border-radius: 6px;
-  font-size: .85rem;
-  line-height: 1.6;
+  font-size: .95rem;
+  line-height: 1.7;
   color: var(--text);
   margin-bottom: 10px;
 }
 .order-notes {
   background: #fff6e0;
   border-left: 3px solid var(--amber);
-  padding: 8px 12px;
+  padding: 10px 14px;
   border-radius: 6px;
-  font-size: .82rem;
+  font-size: .92rem;
   color: #6b4a00;
   margin-bottom: 10px;
   font-style: italic;
@@ -341,28 +342,30 @@ body {
   gap: 10px;
 }
 .order-total {
-  font-family: "Playfair Display", serif;
+  font-family: "DM Sans", sans-serif;
   font-weight: 800;
-  font-size: 1.15rem;
+  font-size: 1.4rem;
   color: var(--ink);
+  letter-spacing: -0.3px;
 }
 .order-total-label {
-  font-size: .7rem;
+  font-size: .72rem;
   color: var(--subtle);
-  margin-right: 4px;
+  margin-right: 5px;
   font-family: "DM Sans", sans-serif;
-  font-weight: 400;
+  font-weight: 600;
+  letter-spacing: 1px;
 }
 
-.order-actions { display:flex; gap:8px; }
+.order-actions { display:flex; gap:10px; }
 .action-btn {
-  padding: 8px 18px;
+  padding: 10px 22px;
   border-radius: 8px;
   font-weight: 700;
-  font-size: .85rem;
+  font-size: .95rem;
   cursor: pointer;
   border: none;
-  display:flex; align-items:center; gap:5px;
+  display:flex; align-items:center; gap:6px;
   transition: all .15s;
   font-family: "DM Sans", sans-serif;
 }
@@ -440,6 +443,32 @@ body {
   .summary-right { gap: 20px; }
   .order-top-left { gap: 6px; }
   .order-customer { font-size: .8rem; gap: 10px; }
+}
+
+/* DESKTOP SCALE-UP */
+@media (min-width: 1024px) {
+  .header-stat-num { font-size: 1.9rem; }
+  .brand-name { font-size: 2rem; }
+  .brand-sub { font-size: .78rem; }
+  .filter-pill { font-size: .95rem; padding: 10px 18px; }
+  .filter-search { font-size: 1rem; padding: 10px 16px; }
+  .filter-search-btn { font-size: .95rem; padding: 10px 22px; }
+  .filter-date { font-size: .95rem; padding: 10px 14px; }
+  .summary-label { font-size: 1.3rem; }
+  .summary-stat-num { font-size: 1.6rem; }
+  .status-tab { font-size: 1rem; padding: 12px 22px; }
+  .status-tab-count { font-size: .8rem; padding: 2px 10px; }
+  .order-id { font-size: 1rem; padding: 4px 10px; }
+  .order-time { font-size: 1rem; }
+  .order-status { font-size: .78rem; padding: 5px 14px; }
+  .order-customer { font-size: 1rem; gap: 20px; }
+  .order-items { font-size: 1rem; padding: 12px 16px; }
+  .order-notes { font-size: .95rem; padding: 10px 14px; }
+  .order-total { font-size: 1.4rem; }
+  .order-total-label { font-size: .8rem; }
+  .action-btn { font-size: 1rem; padding: 10px 22px; }
+  .orders-container { max-width: 1400px; margin-left: auto; margin-right: auto; padding: 0 22px; }
+  .filter-bar, .summary-card, .status-tabs { max-width: 1400px; margin-left: auto; margin-right: auto; }
 }
 </style>
 </head>
@@ -530,7 +559,7 @@ body {
 
 <script>
 // ============ CONFIG ============
-const API_URL = "https://script.google.com/macros/s/AKfycbx9dlTlGhM7p7_xAKpb0XHnMHbmlZd1kW1PnILnA87-xJNGrP3NExMCVYEUPdpQTCOalA/exec"; // <-- PASTE your Google Apps Script /exec URL here
+const API_URL = ""; // <-- PASTE your Google Apps Script /exec URL here
 const POLL_FOREGROUND_MS = 8000;   // 8s when tab is visible
 const POLL_BACKGROUND_MS = 15000;  // 15s when tab is in background
 const AUTO_PAUSE_AFTER_MINUTES = 60; // pause polling after 60min of no interaction on hidden tab
@@ -712,13 +741,86 @@ function renderEmpty(icon, title, sub) {
     </div>`;
 }
 
+// Format date + time for order card — "Today · 17:08" etc.
+function formatOrderDateTime(dateStr, timeStr) {
+  // Extract YYYY-MM-DD from ANY date input (Date object toString, ISO string, or already YYYY-MM-DD)
+  const d = parseToYMD(dateStr);
+  // Extract HH:MM from ANY time input
+  const t = parseToHM(timeStr);
+
+  if (!d) return t || "";
+
+  const today = new Date();
+  const ymdIST = (date) => {
+    const ist = new Date(date.getTime() + (5.5*60*60*1000 - date.getTimezoneOffset()*60*1000));
+    return ist.toISOString().slice(0,10);
+  };
+  const todayIST = ymdIST(today);
+  const yestIST = ymdIST(new Date(today.getTime() - 24*60*60*1000));
+
+  let label;
+  if (d === todayIST) label = "Today";
+  else if (d === yestIST) label = "Yesterday";
+  else {
+    const parts = d.split("-");
+    const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    label = `${parseInt(parts[2])} ${months[parseInt(parts[1])-1] || ""}`.trim();
+  }
+  return t ? `${label} · ${t}` : label;
+}
+
+function parseToYMD(v) {
+  if (!v) return "";
+  const s = String(v);
+  // Already YYYY-MM-DD
+  const m1 = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (m1) return `${m1[1]}-${m1[2]}-${m1[3]}`;
+  // ISO like 2026-04-19T...
+  // Date object toString like "Sun Apr 19 2026 ..."
+  try {
+    const parsed = new Date(s);
+    if (!isNaN(parsed.getTime())) {
+      const ist = new Date(parsed.getTime() + (5.5*60*60*1000 - parsed.getTimezoneOffset()*60*1000));
+      return ist.toISOString().slice(0,10);
+    }
+  } catch(e) {}
+  return "";
+}
+
+function parseToHM(v) {
+  if (!v) return "";
+  const s = String(v);
+  // Already HH:MM or HH:MM:SS
+  const m1 = s.match(/(\d{1,2}):(\d{2})/);
+  if (m1 && !s.startsWith("1899")) {
+    // Looks like a normal time string — but skip obvious Excel time epoch values
+    const hh = parseInt(m1[1]);
+    if (hh >= 0 && hh <= 23) return `${String(hh).padStart(2,"0")}:${m1[2]}`;
+  }
+  // Date object string — extract time portion
+  try {
+    const parsed = new Date(s);
+    if (!isNaN(parsed.getTime())) {
+      // Convert to IST
+      const ist = new Date(parsed.getTime() + (5.5*60*60*1000 - parsed.getTimezoneOffset()*60*1000));
+      const hh = String(ist.getUTCHours()).padStart(2,"0");
+      const mm = String(ist.getUTCMinutes()).padStart(2,"0");
+      // Skip if clearly a time-only cell epoch (1899-12-30 etc.)
+      if (ist.getUTCFullYear() < 1950) {
+        return `${hh}:${mm}`;
+      }
+      return `${hh}:${mm}`;
+    }
+  } catch(e) {}
+  return "";
+}
+
 function buildOrderCard(o) {
   const card = document.createElement("div");
   card.className = "order-card";
 
-  // Format time
-  const time = o.time ? o.time.slice(0,5) : "";
-  const dateTime = `${o.date} · ${time}`;
+  // Format date/time nicely — handles raw Date strings, ISO, or normalized values
+  const dateTime = formatOrderDateTime(o.date, o.time);
 
   // Spam warning
   const spamHtml = (o.spamScore && o.spamScore >= 3)
